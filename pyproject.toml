@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pixel-art-skill-toolkit"
+version = "0.1.0"
+description = "A compact JSON format, renderer, and GUI editor for AI-generated pixel art."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Pixel Art Skill Toolkit contributors" }
+]
+keywords = ["pixel-art", "ai", "json", "sprites", "pillow", "tkinter"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Graphics"
+]
+dependencies = [
+  "Pillow>=10.0.0"
+]
+
+[project.scripts]
+pixel-art-toolkit = "pixel_art_skill_toolkit.cli:main"
+pixel-art-render = "pixel_art_skill_toolkit.cli:render_main"
+pixel-art-gui = "pixel_art_skill_toolkit.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

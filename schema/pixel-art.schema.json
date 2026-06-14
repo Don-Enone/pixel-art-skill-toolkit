@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/pixel-art.schema.json",
+  "title": "Pixel Art Skill Toolkit Document",
+  "type": "object",
+  "required": ["version", "canvas", "palette"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "type": "string" },
+    "metadata": { "type": "object" },
+    "canvas": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "background": { "$ref": "#/$defs/color" }
+      },
+      "additionalProperties": true
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/color" }
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "array", "items": { "$ref": "#/$defs/operation" } },
+          {
+            "type": "object",
+            "properties": {
+              "anchor": { "$ref": "#/$defs/point" },
+              "operations": { "type": "array", "items": { "$ref": "#/$defs/operation" } }
+            },
+            "required": ["operations"]
+          }
+        ]
+      }
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["operations"],
+        "properties": {
+          "name": { "type": "string" },
+          "visible": { "type": "boolean" },
+          "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+          "operations": { "type": "array", "items": { "$ref": "#/$defs/operation" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/operation" }
+    }
+  },
+  "$defs": {
+    "color": {
+      "description": "Palette key, CSS/Pillow color string, RGBA array, transparent, or null.",
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string" },
+        {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 4,
+          "items": { "type": "integer", "minimum": 0, "maximum": 255 }
+        }
+      ]
+    },
+    "point": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        { "type": "integer" },
+        { "type": "integer" }
+      ]
+    },
+    "operation": {
+      "type": "object",
+      "required": ["op"],
+      "properties": {
+        "op": {
+          "enum": ["rect", "outline_rect", "ellipse", "line", "path", "polygon", "pixels", "erase", "stamp"]
+        },
+        "color": { "$ref": "#/$defs/color" },
+        "outline": { "$ref": "#/$defs/color" },
+        "width": { "type": "integer", "minimum": 1 },
+        "x": { "type": "integer" },
+        "y": { "type": "integer" },
+        "w": { "type": "integer", "minimum": 1 },
+        "h": { "type": "integer", "minimum": 1 },
+        "x1": { "type": "integer" },
+        "y1": { "type": "integer" },
+        "x2": { "type": "integer" },
+        "y2": { "type": "integer" },
+        "points": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/point" },
+              {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "prefixItems": [
+                  { "type": "integer" },
+                  { "type": "integer" },
+                  { "$ref": "#/$defs/color" }
+                ]
+              }
+            ]
+          }
+        },
+        "component": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  }
+}
+

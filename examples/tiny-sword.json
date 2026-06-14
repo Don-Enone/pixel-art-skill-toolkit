@@ -1,0 +1,40 @@
+{
+  "version": "0.1",
+  "metadata": {
+    "title": "Tiny sword",
+    "tags": ["item", "weapon"]
+  },
+  "canvas": {
+    "width": 24,
+    "height": 24,
+    "background": null
+  },
+  "palette": {
+    "outline": "#172038",
+    "steel": "#c7dcd0",
+    "shine": "#ffffff",
+    "guard": "#f4b41b",
+    "grip": "#6e3b3b"
+  },
+  "components": {
+    "blade": [
+      { "op": "line", "color": "outline", "x1": 12, "y1": 2, "x2": 12, "y2": 15, "width": 3 },
+      { "op": "line", "color": "steel", "x1": 12, "y1": 3, "x2": 12, "y2": 14, "width": 1 },
+      { "op": "pixels", "color": "shine", "points": [[11, 5], [11, 6], [11, 7]] }
+    ]
+  },
+  "layers": [
+    {
+      "name": "sword",
+      "operations": [
+        { "op": "stamp", "component": "blade", "x": 0, "y": 0 },
+        { "op": "rect", "color": "outline", "x": 7, "y": 15, "w": 10, "h": 3 },
+        { "op": "rect", "color": "guard", "x": 8, "y": 15, "w": 8, "h": 1 },
+        { "op": "rect", "color": "outline", "x": 10, "y": 17, "w": 5, "h": 5 },
+        { "op": "rect", "color": "grip", "x": 11, "y": 17, "w": 3, "h": 4 },
+        { "op": "pixels", "color": "guard", "points": [[10, 21], [11, 22], [12, 22], [13, 22], [14, 21]] }
+      ]
+    }
+  ]
+}
+

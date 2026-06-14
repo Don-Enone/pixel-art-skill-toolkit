@@ -1,0 +1,38 @@
+{
+  "version": "0.1",
+  "metadata": {
+    "title": "Tiny slime",
+    "tags": ["sprite", "creature"]
+  },
+  "canvas": {
+    "width": 24,
+    "height": 24,
+    "background": null
+  },
+  "palette": {
+    "outline": "#1b1b1b",
+    "shadow": "#328a5d",
+    "body": "#55c96f",
+    "light": "#a7f59c",
+    "white": "#fff7d6"
+  },
+  "layers": [
+    {
+      "name": "body",
+      "operations": [
+        { "op": "ellipse", "color": "shadow", "x": 5, "y": 7, "w": 14, "h": 12 },
+        { "op": "ellipse", "color": "body", "x": 4, "y": 5, "w": 15, "h": 12 },
+        { "op": "pixels", "color": "outline", "points": [[8, 5], [9, 4], [10, 4], [11, 4], [12, 4], [13, 5], [5, 10], [4, 11], [4, 12], [5, 15], [6, 16], [17, 16], [18, 15], [19, 12], [18, 9]] },
+        { "op": "pixels", "color": "light", "points": [[8, 7], [9, 7], [8, 8], [7, 9]] }
+      ]
+    },
+    {
+      "name": "face",
+      "operations": [
+        { "op": "pixels", "color": "outline", "points": [[9, 11], [14, 11], [11, 14], [12, 14]] },
+        { "op": "pixels", "color": "white", "points": [[9, 10], [14, 10]] }
+      ]
+    }
+  ]
+}
+

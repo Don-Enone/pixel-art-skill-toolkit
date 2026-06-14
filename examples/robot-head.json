@@ -1,0 +1,43 @@
+{
+  "version": "0.1",
+  "metadata": {
+    "title": "Robot head",
+    "tags": ["avatar", "robot"]
+  },
+  "canvas": {
+    "width": 32,
+    "height": 32,
+    "background": null
+  },
+  "palette": {
+    "outline": "#20283d",
+    "metal": "#8aa3b1",
+    "dark": "#4f6572",
+    "eye": "#7df9ff",
+    "red": "#ff4d6d"
+  },
+  "components": {
+    "eye": {
+      "anchor": [0, 0],
+      "operations": [
+        { "op": "rect", "color": "outline", "x": 0, "y": 0, "w": 5, "h": 4 },
+        { "op": "rect", "color": "eye", "x": 1, "y": 1, "w": 3, "h": 2 }
+      ]
+    }
+  },
+  "layers": [
+    {
+      "name": "head",
+      "operations": [
+        { "op": "rect", "color": "outline", "x": 7, "y": 8, "w": 18, "h": 17 },
+        { "op": "rect", "color": "metal", "x": 8, "y": 9, "w": 16, "h": 15 },
+        { "op": "rect", "color": "dark", "x": 10, "y": 20, "w": 12, "h": 2 },
+        { "op": "stamp", "component": "eye", "x": 10, "y": 13 },
+        { "op": "stamp", "component": "eye", "x": 17, "y": 13 },
+        { "op": "line", "color": "outline", "x1": 16, "y1": 8, "x2": 16, "y2": 4 },
+        { "op": "pixels", "color": "red", "points": [[16, 3], [15, 4], [17, 4]] }
+      ]
+    }
+  ]
+}
+
