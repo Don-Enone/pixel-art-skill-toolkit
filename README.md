@@ -47,6 +47,20 @@ python -m pixel_art_skill_toolkit render examples\slime.json -o slime.png --scal
 
 ## Open The GUI Editor
 
+Double-click on Windows:
+
+```text
+launch_gui.bat
+```
+
+PowerShell:
+
+```powershell
+.\launch_gui.ps1
+```
+
+After installing the package:
+
 ```bash
 pixel-art-gui
 ```
@@ -58,6 +72,8 @@ pixel-art-toolkit gui examples/slime.json
 ```
 
 The editor can open a Pixel Art JSON file, render a preview, edit raw JSON, edit palette colors, add/edit/delete drawing operations, save JSON, and export PNG.
+
+The preview panel uses scrollbars, so large integer-scaled sprites remain reachable instead of being clipped by the window edge.
 
 ## Format Overview
 
@@ -131,4 +147,3 @@ This is an alpha implementation intended to establish a practical open-source fo
 ## License
 
 MIT
-

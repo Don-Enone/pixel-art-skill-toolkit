@@ -4,6 +4,20 @@ The GUI editor is intentionally small. Its purpose is to make AI-generated Pixel
 
 ## Open
 
+On Windows, double-click:
+
+```text
+launch_gui.bat
+```
+
+Or run:
+
+```powershell
+.\launch_gui.ps1
+```
+
+After installing the package:
+
 ```bash
 pixel-art-gui
 ```
@@ -24,6 +38,7 @@ python -m pixel_art_skill_toolkit gui examples/slime.json
 - Add, edit, or delete drawing operations
 - Save JSON
 - Export PNG at an integer scale
+- Scrollable preview area for large scaled sprites
 
 ## Workflow
 
@@ -32,4 +47,3 @@ python -m pixel_art_skill_toolkit gui examples/slime.json
 3. Change raw JSON directly or use the Palette and Operations tabs.
 4. Click `Apply JSON` or `Render`.
 5. Save the JSON or export a PNG.
-

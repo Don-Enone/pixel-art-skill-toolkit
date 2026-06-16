@@ -38,9 +38,13 @@ class PixelArtEditor:
     def __init__(self, root: tk.Tk, input_path: Path | None = None):
         self.root = root
         self.root.title("Pixel Art Skill Toolkit")
+        self.root.geometry("1100x720")
+        self.root.minsize(900, 560)
         self.current_path: Path | None = None
         self.document: dict[str, Any] = default_document()
         self.preview_photo: ImageTk.PhotoImage | None = None
+        self.preview_item: int | None = None
+        self.preview_error_item: int | None = None
         self.preview_scale = tk.IntVar(value=12)
 
         self._build_menu()
@@ -93,8 +97,30 @@ class PixelArtEditor:
         ).pack(side=tk.LEFT, padx=(6, 10))
         ttk.Button(preview_bar, text="Render", command=self.render_preview).pack(side=tk.LEFT)
 
-        self.preview_label = ttk.Label(right, anchor="center")
-        self.preview_label.pack(fill=tk.BOTH, expand=True, pady=(8, 8))
+        preview_frame = ttk.Frame(right)
+        preview_frame.pack(fill=tk.BOTH, expand=True, pady=(8, 8))
+        preview_frame.columnconfigure(0, weight=1)
+        preview_frame.rowconfigure(0, weight=1)
+
+        self.preview_canvas = tk.Canvas(preview_frame, highlightthickness=0, background="#f4f4f4")
+        preview_xscroll = ttk.Scrollbar(
+            preview_frame,
+            orient=tk.HORIZONTAL,
+            command=self.preview_canvas.xview,
+        )
+        preview_yscroll = ttk.Scrollbar(
+            preview_frame,
+            orient=tk.VERTICAL,
+            command=self.preview_canvas.yview,
+        )
+        self.preview_canvas.configure(
+            xscrollcommand=preview_xscroll.set,
+            yscrollcommand=preview_yscroll.set,
+        )
+        self.preview_canvas.grid(row=0, column=0, sticky="nsew")
+        preview_yscroll.grid(row=0, column=1, sticky="ns")
+        preview_xscroll.grid(row=1, column=0, sticky="ew")
+        self.preview_canvas.bind("<Configure>", lambda _event: self._position_preview())
 
         notebook = ttk.Notebook(right)
         notebook.pack(fill=tk.BOTH, expand=False)
@@ -223,14 +249,57 @@ class PixelArtEditor:
             self.json_text.insert("1.0", pretty_json(self.document))
 
     def render_preview(self) -> None:
+        self.preview_canvas.delete("preview")
+        self.preview_item = None
+        self.preview_error_item = None
         try:
             scale = self.preview_scale.get()
             image = render_document(self.document, scale=scale)
             self.preview_photo = ImageTk.PhotoImage(image)
-            self.preview_label.configure(image=self.preview_photo, text="")
+            self.preview_item = self.preview_canvas.create_image(
+                0,
+                0,
+                image=self.preview_photo,
+                anchor="nw",
+                tags=("preview",),
+            )
+            self._position_preview()
         except Exception as exc:
             self.preview_photo = None
-            self.preview_label.configure(image="", text=str(exc))
+            self.preview_error_item = self.preview_canvas.create_text(
+                12,
+                12,
+                anchor="nw",
+                text=str(exc),
+                fill="#8b0000",
+                width=320,
+                tags=("preview",),
+            )
+            self.preview_canvas.configure(scrollregion=self.preview_canvas.bbox("preview"))
+
+    def _position_preview(self) -> None:
+        if self.preview_item is None or self.preview_photo is None:
+            if self.preview_error_item is not None:
+                self.preview_canvas.coords(self.preview_error_item, 12, 12)
+                self.preview_canvas.configure(scrollregion=self.preview_canvas.bbox("preview"))
+            return
+
+        canvas_width = max(self.preview_canvas.winfo_width(), 1)
+        canvas_height = max(self.preview_canvas.winfo_height(), 1)
+        image_width = self.preview_photo.width()
+        image_height = self.preview_photo.height()
+        x = max((canvas_width - image_width) // 2, 0)
+        y = max((canvas_height - image_height) // 2, 0)
+
+        self.preview_canvas.coords(self.preview_item, x, y)
+        self.preview_canvas.configure(
+            scrollregion=(
+                0,
+                0,
+                max(canvas_width, image_width),
+                max(canvas_height, image_height),
+            )
+        )
 
     def refresh_lists(self) -> None:
         for item in self.palette_tree.get_children():
